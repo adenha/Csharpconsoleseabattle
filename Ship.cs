@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SeaBattle
 {
@@ -29,6 +30,14 @@ namespace SeaBattle
                     Position.Add(new Point(position.X, (position.Y + i), position.Map));
                     Damaged.Add(false);
                 }
+            }
+        }
+        public void Sink(Point target)
+        {
+            Damaged[Position.IndexOf(target)] = true;
+            if(Damaged.All(d => d == true))
+            {
+                Destroyed = true;
             }
         }
     }
