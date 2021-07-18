@@ -16,27 +16,60 @@ namespace SeaBattle
                 string entry;
                 string X = "1";
                 string Y = "1";
+                int XInt;
+                int YInt;
                 bool orrientation = true;
                 bool playerwin = true;
                 for (int i = 2; i < 5; i++)
                 {
-                    Console.WriteLine("Set Ship X coordinate 1-8");
-                    entry = Console.ReadLine();
-                    X = entry;
-                    Console.WriteLine("Set Ship Y coordinate 1-8");
-                    entry = Console.ReadLine();
-                    Y = entry;
-                    Console.WriteLine("Set Ship orrientation H for horizontal V for vertical");
-                    entry = Console.ReadLine();
-                    if (entry.ToLower() == "h" || entry.ToLower() == "horizontal")
+                    while (true)
                     {
-                        orrientation = true;
+                        bool pointunoccupied = true;
+                        Console.WriteLine("Set Ship X coordinate 1-8");
+                        entry = Console.ReadLine();
+                        X = entry;
+                        Console.WriteLine("Set Ship Y coordinate 1-8");
+                        entry = Console.ReadLine();
+                        Y = entry;
+                        Console.WriteLine("Set Ship orrientation H for horizontal V for vertical");
+                        entry = Console.ReadLine();
+                        if (entry.ToLower() == "h" || entry.ToLower() == "horizontal")
+                        {
+                            orrientation = true;
+                        }
+                        else if (entry.ToLower() == "v" || entry.ToLower() == "vertical")
+                        {
+                            orrientation = false;
+                        }
+                        if (int.TryParse(X, out XInt) && int.TryParse(Y, out YInt))
+                        {
+                            foreach (Ship s in humanPlayer.ships)
+                            {
+                                foreach (Point p in new Ship(i, new Point((XInt - 1), (YInt - 1), map), orrientation).Position)
+                                {
+                                    if (s.Position.Contains(p))
+                                    {
+                                        pointunoccupied = false;
+                                        break;
+                                    }
+                                }
+                                if (!pointunoccupied)
+                                {
+                                    break;
+                                }
+                            }
+                            if (map.OnMap(new Point((XInt - 1), (YInt - 1), map)) && pointunoccupied)
+                            {
+                                break;
+                            }
+                            Console.WriteLine("Your Ship location overlaps one of your ships");
+                        }
+                        else
+                        {
+                            Console.WriteLine("The X and Y coordinates need to be numbers between 1-8");
+                        }
                     }
-                    else if (entry.ToLower() == "v" || entry.ToLower() == "vertical")
-                    {
-                        orrientation = false;
-                    }
-                    humanPlayer.ships.Add(new Ship(i, new Point((int.Parse(X) - 1), (int.Parse(Y) - 1), map), orrientation));
+                    humanPlayer.ships.Add(new Ship(i, new Point((XInt - 1), (YInt - 1), map), orrientation));
                 }
                 while (true)
                 {
@@ -46,17 +79,24 @@ namespace SeaBattle
                     Console.WriteLine("Set target Y coordinate 1-8");
                     entry = Console.ReadLine();
                     Y = entry;
-                    Console.WriteLine(humanPlayer.Shoot(new Point((int.Parse(X) - 1), (int.Parse(Y) - 1), map), comPlayer));
-                    if (comPlayer.Lost)
+                    if (int.TryParse(X, out XInt) && int.TryParse(Y, out YInt))
                     {
-                        playerwin = true;
-                        break;
+                        Console.WriteLine(humanPlayer.Shoot(new Point((XInt - 1), (YInt - 1), map), comPlayer));
+                        if (comPlayer.Lost)
+                        {
+                            playerwin = true;
+                            break;
+                        }
+                        comPlayer.Shoot(comPlayer.RandomPoint(map), humanPlayer);
+                        if (humanPlayer.Lost)
+                        {
+                            playerwin = false;
+                            break;
+                        }
                     }
-                    comPlayer.Shoot(comPlayer.RandomPoint(map), humanPlayer);
-                    if (humanPlayer.Lost)
+                    else
                     {
-                        playerwin = false;
-                        break;
+                        Console.WriteLine("The X and Y coordinates need to be numbers between 1-8");
                     }
                 }
                 if (playerwin)

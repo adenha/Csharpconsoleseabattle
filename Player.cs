@@ -7,7 +7,7 @@ namespace SeaBattle
     {
         public List<Point> Firedpoints = new List<Point>();
         public List<Ship> ships = new List<Ship>();
-        public bool Lost { get { return ships.All(d => d.Destroyed = true); } }
+        public bool Lost { get { return ships.All(d => d.Destroyed); } }
         public string Shoot(Point target, Player enemy)
         {
             if (Firedpoints.Contains(target))
