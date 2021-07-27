@@ -41,28 +41,36 @@ namespace SeaBattle
                         {
                             orrientation = false;
                         }
-                        if (int.TryParse(X, out XInt) && int.TryParse(Y, out YInt))
+                        if (int.TryParse(X, out XInt) && int.TryParse(Y, out YInt) && XInt < 9 && XInt > 0 && YInt < 9 && YInt > 0)
                         {
-                            foreach (Ship s in humanPlayer.ships)
+                            try
                             {
-                                foreach (Point p in new Ship(i, new Point((XInt - 1), (YInt - 1), map), orrientation).Position)
+                                Ship trys = new Ship(i, new Point((XInt - 1), (YInt - 1), map), orrientation);
+                                foreach (Ship s in humanPlayer.ships)
                                 {
-                                    if (s.Position.Contains(p))
+                                    foreach (Point p in trys.Position)
                                     {
-                                        pointunoccupied = false;
+                                        if (s.Position.Contains(p))
+                                        {
+                                            pointunoccupied = false;
+                                            break;
+                                        }
+                                    }
+                                    if (!pointunoccupied)
+                                    {
                                         break;
                                     }
                                 }
-                                if (!pointunoccupied)
+                                if (map.OnMap(new Point((XInt - 1), (YInt - 1), map)) && pointunoccupied)
                                 {
                                     break;
                                 }
+                                Console.WriteLine("Your Ship location overlaps one of your ships");
                             }
-                            if (map.OnMap(new Point((XInt - 1), (YInt - 1), map)) && pointunoccupied)
+                            catch (System.Exception)
                             {
-                                break;
+                                Console.WriteLine("At that position your ship goes off the map. Pick another position");
                             }
-                            Console.WriteLine("Your Ship location overlaps one of your ships");
                         }
                         else
                         {
@@ -79,19 +87,27 @@ namespace SeaBattle
                     Console.WriteLine("Set target Y coordinate 1-8");
                     entry = Console.ReadLine();
                     Y = entry;
-                    if (int.TryParse(X, out XInt) && int.TryParse(Y, out YInt))
+                    if (int.TryParse(X, out XInt) && int.TryParse(Y, out YInt) && XInt < 9 && XInt > 0 && YInt < 9 && YInt > 0)
                     {
-                        Console.WriteLine(humanPlayer.Shoot(new Point((XInt - 1), (YInt - 1), map), comPlayer));
-                        if (comPlayer.Lost)
+                        Point point = new Point((XInt - 1), (YInt - 1), map);
+                        if (!humanPlayer.Firedpoints.Contains(point))
                         {
-                            playerwin = true;
-                            break;
+                            Console.WriteLine(humanPlayer.Shoot(point, comPlayer));
+                            if (comPlayer.Lost)
+                            {
+                                playerwin = true;
+                                break;
+                            }
+                            comPlayer.Shoot(comPlayer.RandomPoint(map), humanPlayer);
+                            if (humanPlayer.Lost)
+                            {
+                                playerwin = false;
+                                break;
+                            }
                         }
-                        comPlayer.Shoot(comPlayer.RandomPoint(map), humanPlayer);
-                        if (humanPlayer.Lost)
+                        else
                         {
-                            playerwin = false;
-                            break;
+                            Console.WriteLine("You Already fired on that point please pick another point.");
                         }
                     }
                     else
@@ -106,6 +122,18 @@ namespace SeaBattle
                 else
                 {
                     Console.WriteLine("You Lose");
+                }
+                Console.WriteLine("Enter Y to save your map as a json any other key continue without saving");
+                entry = Console.ReadLine();
+                if (entry.ToLower() == "y" || entry.ToLower() == "yes" || entry.ToLower() == "save")
+                {
+                    Console.WriteLine("Enter the name you want your json to have");
+                    entry = Console.ReadLine();
+                    if (String.IsNullOrEmpty(entry))
+                    {
+                        humanPlayer.ExportMap();
+                    }
+                    humanPlayer.ExportMap(entry);
                 }
                 Console.WriteLine("Enter Q to quit enter any other key to continue");
                 entry = Console.ReadLine();
