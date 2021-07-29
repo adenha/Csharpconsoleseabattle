@@ -129,11 +129,14 @@ namespace SeaBattle
                 {
                     Console.WriteLine("Enter the name you want your json to have");
                     entry = Console.ReadLine();
-                    if (String.IsNullOrEmpty(entry))
+                    if (String.IsNullOrWhiteSpace(entry))
                     {
                         humanPlayer.ExportMap();
                     }
-                    humanPlayer.ExportMap(entry);
+                    else
+                    {
+                        humanPlayer.ExportMap(entry);
+                    }
                 }
                 Console.WriteLine("Enter Q to quit enter any other key to continue");
                 entry = Console.ReadLine();

@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace SeaBattle
 {
     public class Ship
     {
         public readonly int Length;
-        public Point InitalPosition;
+        public int InitalXPosition;
+        public int InitalYPosition;
         public bool Orientation;
         public bool Destroyed = false;
         public List<Point> Position = new List<Point>();
@@ -14,7 +16,8 @@ namespace SeaBattle
         public Ship(int length, Point position, bool orientation)
         {
             Length = length;
-            InitalPosition = position;
+            InitalXPosition = position.X;
+            InitalYPosition = position.Y;
             Orientation = orientation;
             Damaged.Add(false);
             Position.Add(position);
@@ -38,11 +41,22 @@ namespace SeaBattle
         public void Sink(Point target)
         {
             Damaged[Position.IndexOf(target)] = true;
-            if(Damaged.All(d => d == true))
+            if (Damaged.All(d => d == true))
             {
                 Destroyed = true;
                 System.Console.WriteLine("Ship Sunk");
             }
         }
+    }
+    public class JsonShip
+    {
+        [JsonProperty(PropertyName = "Length")]
+        public int Length { get; set; }
+        [JsonProperty(PropertyName = "InitalXPosition")]
+        public int InitalXPosition { get; set; }
+        [JsonProperty(PropertyName = "InitalYPosition")]
+        public int InitalYPosition { get; set; }
+        [JsonProperty(PropertyName = "Orientation")]
+        public bool Orientation { get; set; }
     }
 }

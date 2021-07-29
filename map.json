@@ -1,0 +1,116 @@
+[
+    {
+        "Length": 2,
+        "InitalXPosition": 0,
+        "InitalYPosition": 0,
+        "Orientation": false,
+        "Destroyed": false,
+        "Position": [
+            {
+                "X": 0,
+                "Y": 0,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            },
+            {
+                "X": 0,
+                "Y": 1,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            }
+        ],
+        "Damaged": [
+            true,
+            false
+        ]
+    },
+    {
+        "Length": 3,
+        "InitalXPosition": 1,
+        "InitalYPosition": 0,
+        "Orientation": false,
+        "Destroyed": false,
+        "Position": [
+            {
+                "X": 1,
+                "Y": 0,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            },
+            {
+                "X": 1,
+                "Y": 1,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            },
+            {
+                "X": 1,
+                "Y": 2,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            }
+        ],
+        "Damaged": [
+            false,
+            false,
+            false
+        ]
+    },
+    {
+        "Length": 4,
+        "InitalXPosition": 2,
+        "InitalYPosition": 0,
+        "Orientation": false,
+        "Destroyed": false,
+        "Position": [
+            {
+                "X": 2,
+                "Y": 0,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            },
+            {
+                "X": 2,
+                "Y": 1,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            },
+            {
+                "X": 2,
+                "Y": 2,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            },
+            {
+                "X": 2,
+                "Y": 3,
+                "Map": {
+                    "Width": 7,
+                    "Height": 7
+                }
+            }
+        ],
+        "Damaged": [
+            false,
+            false,
+            false,
+            false
+        ]
+    }
+]

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace SeaBattle
 {
@@ -7,22 +10,30 @@ namespace SeaBattle
         Random rng = new Random();
         public ComPlayer(Map map)
         {
-            ships.Add(new Ship(2, new Point(0, 0, map), false));
-            ships.Add(new Ship(3, new Point(1, 0, map), false));
-            ships.Add(new Ship(4, new Point(2, 0, map), false));
+            List<JsonShip> imported = ImportMap();
+            foreach (JsonShip s in imported)
+            {
+                ships.Add(new Ship(s.Length, new Point(s.InitalXPosition, s.InitalYPosition, map), s.Orientation));
+            }
         }
-        public void ImportMap()
+        public List<JsonShip> ImportMap()
         {
-            // Populate ships using json
+            var importShip = new List<JsonShip>();
+            var serializer = new JsonSerializer();
+            using (var reader = new StreamReader("map.json"))
+            using (var jsonReader = new JsonTextReader(reader))
+            {
+                importShip = serializer.Deserialize<List<JsonShip>>(jsonReader);
+            }
+            return importShip;
         }
-
         public Point RandomPoint(Map map)
         {
             Point value;
             while (true)
             {
-                int X = rng.Next(map.Width+1);
-                int Y = rng.Next(map.Height+1);
+                int X = rng.Next(map.Width + 1);
+                int Y = rng.Next(map.Height + 1);
                 value = new Point(X, Y, map);
                 if (!Firedpoints.Contains(value))
                 {
